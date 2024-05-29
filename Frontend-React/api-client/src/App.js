@@ -1,25 +1,22 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { dark } from '@mui/material/styles/createPalette';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [posts, setPosts] = useState(null)
+  const BackedApi = "http://127.0.0.1:8000/api/"
+  fetch(BackedApi)
+        .then((response) => response.json())
+        .then((data) => {
+          // setPosts(data);
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    
+
+
+  return (<h1>BOA</h1>)
+   
 }
 
 export default App;
