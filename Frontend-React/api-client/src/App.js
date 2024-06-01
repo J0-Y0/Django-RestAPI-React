@@ -3,9 +3,9 @@ import './App.css';
 import { dark } from '@mui/material/styles/createPalette';
 import PostList from './components/postList';
 
-function App() {
+function App() {  
   const [posts, setPosts] = useState(null)
-  const BackedApi = "http://127.0.0.1:8000/api/"
+  const BackedApi = "http://192.168.100.29:8000/api/"
   useEffect(() => {
         fetch(BackedApi)
         .then((response) => response.json())

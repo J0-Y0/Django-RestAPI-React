@@ -4,15 +4,26 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Header from './components/header'
-import PostList from './components/postList'
-// import Footer from "./components/footer"
-
+import {BrowserRouter} from 'react-router-dom'
+import { Route } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+import NoPage from "./components/noPage"
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const Rooting =() => {
+  return  (
+     <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
+  
+} 
 root.render(
   <>
-  <Header />
-    
-    <App />
+    <Header />
+    <Rooting />
   </>
 );
 
