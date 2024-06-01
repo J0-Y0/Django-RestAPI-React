@@ -5,7 +5,7 @@ import PostList from './components/postList';
 
 function App() {
   const [posts, setPosts] = useState(null)
-  const BackedApi = "http://127.0.0.1:8000/api/"
+  const BackedApi = "http://10.101.14.200:8002/api/"
   useEffect(() => {
         fetch(BackedApi)
         .then((response) => response.json())
