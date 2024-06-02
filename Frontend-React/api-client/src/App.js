@@ -4,7 +4,7 @@ import { dark } from '@mui/material/styles/createPalette';
 import PostList from './components/postList';
 
 function App() {  
-  const [posts, setPosts] = useState(null)
+  const [posts, setPosts] = useState("")
   const BackedApi = "http://192.168.100.29:8000/api/"
   useEffect(() => {
         fetch(BackedApi)
@@ -12,13 +12,13 @@ function App() {
          .then((data) => {
           
          setPosts(data);
-          console.log(data);
+        console.log(data);
         })
         .catch((error) => console.log(error));
     
   },[]) 
         
-  return (posts && <PostList posts={posts} />)
+  return (posts.length>0 && <PostList posts={posts} />)
    
 }
 

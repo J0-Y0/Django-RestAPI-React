@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Login from './components/login';
 import reportWebVitals from './reportWebVitals';
 import Header from './components/header'
 import {BrowserRouter} from 'react-router-dom'
@@ -14,6 +15,7 @@ const Rooting =() => {
      <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+AUTH_USER_MODEL = "users.CustomUser"
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,10 +40,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "users",
     "blog",
     "blog_api",
-    "rest_framework",
+    "rest_framework",a
     "corsheaders",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -109,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -125,7 +127,10 @@ STATIC_URL = "static/"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
-    ]
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 # Default primary key field type

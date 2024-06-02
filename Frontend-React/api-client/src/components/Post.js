@@ -18,20 +18,11 @@ import { useState } from 'react';
 import ReportIcon from '@mui/icons-material/Report';
 export default function Post({ post }) {
   const [label, setLabel ] = useState("Type your comment")
-  const theme = createTheme({
-    palette: {
-      warning: {
-        main: '#ffffff',
-        light: "ffffff",
-        dark:"aaaaaa",
-      }
-      
-    }
-})
+
+
   return (
 
-        <ThemeProvider theme={theme}>
-          <Card   sx={{ minWidth: 275 ,my: '3px',background:"primary"}}>
+          <Card    sx={{ minWidth: 275 ,my: '3px',background:"primary"}}>
             <CardContent>
             
               <Typography variant="h5" component="div" >
@@ -48,20 +39,19 @@ export default function Post({ post }) {
             </CardContent>
         <CardActions>
           
-          <TextField  icon size='small' label={label} onChange={(e)=>setLabel(e.target.value.length>0?"Commenting...":"Type your comment")} fullWidth />
-              <ButtonGroup  color='primary' >
+              <ButtonGroup  color='primary'  >
+          <TextField  icon size='small' fullWidth label={label}  onChange={(e)=>setLabel(e.target.value.length>0?"Commenting...":"Type your comment")}  />
 
-              <Button  endIcon={<FavoriteBorderIcon />} ></Button>
-              <Button  endIcon={<BookmarkAddIcon />} ></Button>
-              <Button  endIcon={<CommentIcon />} > </Button>
-              <Button  endIcon={<ReportIcon />} > </Button>
+              <Button  startIcon={<FavoriteBorderIcon />} >44</Button>
+              <Button  startIcon={<BookmarkAddIcon />} ></Button>
+              <Button  startIcon={<CommentIcon />} >65 </Button>
+              <Button  startIcon={<ReportIcon />} > </Button>
 
               </ButtonGroup>
               
               
             </CardActions>
           </Card>
-      </ThemeProvider>
 
   );
 }
