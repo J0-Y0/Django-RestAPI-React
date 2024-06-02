@@ -1,7 +1,12 @@
 from blog.models import Post
 from rest_framework import generics
 from .serializer import PostSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission
+
+
+class PostUpdateDeletePermissions(BasePermission):
+
+    message = "updating post is restricted to the author only "
 
 
 # Provides get and post method hand
