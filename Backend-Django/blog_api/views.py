@@ -8,17 +8,25 @@ from .serializer import PostSerializer, CustomUserSerializer
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     BasePermission,
+    AllowAny,
     SAFE_METHODS,
 )
 
 
-class customUserRegister(APIView):
-    def post(self, request, format="json"):
-        serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class customUserRegister(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = CustomUserSerializer
+
+
+# class customUserRegister(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request, format="json"):
+#         serializer = CustomUserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # a custom permission , only the post author can update and delete the post
@@ -33,7 +41,7 @@ class PostAuthorPermission(BasePermission):
 
 # Provides get and post method hand
 class PostList(generics.ListCreateAPIView):
-
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Post.postObject.all()
     serializer_class = PostSerializer
 
