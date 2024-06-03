@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { dark } from '@mui/material/styles/createPalette';
 import PostList from './components/postList';
 
 function App() {

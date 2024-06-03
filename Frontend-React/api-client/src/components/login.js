@@ -13,15 +13,17 @@ const card = (
 
 
   <CardContent sx={{ padding: 8, border: "1px solid outline red" }} >
-    <Typography noWrap variant='h3' bold sx={{ fontSize: 20, fontWeight: "bold", color: "orange" }} color="text.primary" >
-      Welcome back
-    </Typography>
-    <hr />
+    <form>
+      <Typography noWrap variant='h3' bold sx={{ fontSize: 20, fontWeight: "bold", color: "orange" }} color="text.primary" >
+        Welcome back
+      </Typography>
+      <hr />
 
-    <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Username or Email" variant="standard" required gutterBottom /> <br />
-    <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Password" variant="standard" required type='password' gutterBottom /><br /><br />
+      <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Username or Email" variant="standard" type='email' required gutterBottom /> <br />
+      <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Password" variant="standard" required type='password' gutterBottom /><br /><br />
 
-    <Button fullWidth variant="contained" color='warning'>Login</Button>
+      <Button type=" submit" fullWidth variant="contained" color='warning'>Login</Button>
+    </form>
   </CardContent>
 
 );
