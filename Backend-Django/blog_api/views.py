@@ -2,6 +2,8 @@ from blog.models import Post
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 from .serializer import PostSerializer, CustomUserSerializer
 
@@ -10,6 +12,7 @@ from rest_framework.permissions import (
     BasePermission,
     AllowAny,
     SAFE_METHODS,
+    IsAuthenticated,
 )
 
 
@@ -39,18 +42,61 @@ class PostAuthorPermission(BasePermission):
         return obj.author == request.user
 
 
-# Provides get and post method hand
-class PostList(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Post.postObject.all()
-    serializer_class = PostSerializer
+class PostList(viewsets.ViewSet):
+    queryset = Post.objects.all()
+    permission_classes = [PostAuthorPermission]
 
+    def list(self, request):
+        serializer = PostSerializer(self.queryset, many=True)
+        return Response(serializer.data)
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostAuthorPermission):
-    permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
+    def retrieve(self, request, pk=None):
+        post = get_object_or_404(self.queryset, pk=pk)
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
 
-    queryset = Post.postObject.all()
-    serializer_class = PostSerializer
+    def update(self, request, pk=None):
+        print("============================")
+        print(request.user)
+        post = get_object_or_404(self.queryset, pk=pk)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        """
+        
+    def list(self, request):
+        pass
+
+    def create(self, request):
+        pass
+
+    def retrieve(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+        """
+
+    # # Provides get and post method hand
+    # class PostList(generics.ListCreateAPIView):
+    #     permission_classes = [IsAuthenticatedOrReadOnly]
+    #     queryset = Post.postObject.all()
+    #     serializer_class = PostSerializer
+
+    # class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostAuthorPermission):
+    #     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
+
+    #     queryset = Post.postObject.all()
+    #     serializer_class = PostSerializer
 
     """
 Concrete View Classes
