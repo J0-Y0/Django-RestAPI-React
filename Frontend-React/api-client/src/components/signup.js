@@ -6,22 +6,24 @@ import TextField from '@mui/material/TextField';
 
 import { useState } from 'react';
 import axiosInstance from '../axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
     const [account, setAccount] = useState({});
+    const redirect = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await axiosInstance.post("/signup", {
-              account
-            });
+            await axiosInstance.post("signup", account);
             // Handle successful response, such as redirecting the user or showing a success message
             console.log("Signup successful");
+            redirect('/login')
         
         } catch (error) {
             // Handle error, such as displaying an error message to the user
             console.error("Error signing up:", error.message);
+            console.log(error);
         }
     }
 
@@ -40,8 +42,8 @@ export default function Signup() {
                     </Typography>
                     <hr />
 
-                    <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account['firstName']} name="firstName" id="fistName" label="First name"   variant="standard" type='text' required  /> <br />
-                    <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account['lastName']}  name="lastName" id="lastName" label="Last name"  variant="standard" type='text' required  /> <br />
+                    <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account["first_name"]} name="first_name" id="first_name" label="First name"   variant="standard" type='text' required  /> <br />
+                    <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account["last_name"]}  name="last_name" id="last_name" label="Last name"  variant="standard" type='text' required  /> <br />
 
                     <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account['email']}  name="email" id="email" label="Username or Email" variant="standard" type='email' required  /> <br />
                     <TextField fullWidth sx={{ marginBottom: 2 }} onChange={handleChange} value={account['password']}  name="password" id="password" label="Password" variant="standard" required type='password'  /><br /><br />
