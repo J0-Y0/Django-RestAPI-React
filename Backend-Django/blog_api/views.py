@@ -21,17 +21,6 @@ class customUserRegister(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
 
 
-# class customUserRegister(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request, format="json"):
-#         serializer = CustomUserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 # a custom permission , only the post author can update and delete the post
 class PostAuthorPermission(BasePermission):
     message = "Action restricted to post author only"
@@ -42,30 +31,51 @@ class PostAuthorPermission(BasePermission):
         return obj.author == request.user
 
 
-class PostList(viewsets.ViewSet):
+class PostList(viewsets.ModelViewSet):
     queryset = Post.objects.all()
-    permission_classes = [PostAuthorPermission]
+    permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
+    serializer_class = PostSerializer
 
-    def list(self, request):
-        serializer = PostSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        return self.objects.all()
 
-    def retrieve(self, request, pk=None):
-        post = get_object_or_404(self.queryset, pk=pk)
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
 
-    def update(self, request, pk=None):
-        print("============================")
-        print(request.user)
-        post = get_object_or_404(self.queryset, pk=pk)
-        serializer = PostSerializer(post, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class PostList(viewsets.ViewSet):
+#     queryset = Post.objects.all()
+#     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
 
-        """
+#     def list(self, request):
+#         serializer = PostSerializer(self.queryset, many=True)
+#         return Response(serializer.data)
+
+#     def retrieve(self, request, pk=None):
+#         post = get_object_or_404(self.queryset, pk=pk)
+#         serializer = PostSerializer(post)
+#         return Response(serializer.data)
+
+#     def create(self, request):
+#         serializer = PostSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def update(self, request, pk=None):
+#         print("============================")
+#         print(request.user)
+#         post = get_object_or_404(self.queryset, pk=pk)
+#         serializer = PostSerializer(post, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def destroy(self, request, pk=None):
+#         post = get_object_or_404(self.queryset, pk=pk)
+#         post.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+"""
         
     def list(self, request):
         pass
@@ -86,19 +96,19 @@ class PostList(viewsets.ViewSet):
         pass
         """
 
-    # # Provides get and post method hand
-    # class PostList(generics.ListCreateAPIView):
-    #     permission_classes = [IsAuthenticatedOrReadOnly]
-    #     queryset = Post.postObject.all()
-    #     serializer_class = PostSerializer
+# # Provides get and post method hand
+# class PostList(generics.ListCreateAPIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     queryset = Post.postObject.all()
+#     serializer_class = PostSerializer
 
-    # class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostAuthorPermission):
-    #     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
+# class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostAuthorPermission):
+#     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
 
-    #     queryset = Post.postObject.all()
-    #     serializer_class = PostSerializer
+#     queryset = Post.postObject.all()
+#     serializer_class = PostSerializer
 
-    """
+"""
 Concrete View Classes
 The following classes are the concrete generic views. If you're using generic views this is normally the level you'll be working at unless you need heavily customized behavior.
 
