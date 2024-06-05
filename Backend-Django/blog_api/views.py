@@ -21,160 +21,31 @@ class customUserRegister(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
 
 
-# a custom permission , only the post author can update and delete the post
+# a custom permission ,
+# only author has
+#   update his post
+#   view/update/delete drafted posts
 class PostAuthorPermission(BasePermission):
     message = "Action restricted to post author only"
 
     def has_object_permission(self, request, view, obj):
+        # only author can see drafted poste
+        if obj.status == "draft":
+            return obj.author == request.user
         if request.method in SAFE_METHODS:
             return True
         return obj.author == request.user
 
 
 class PostList(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
 
     def get_queryset(self):
-        return self.objects.all()
+        return Post.postObject.all()
 
-
-# class PostList(viewsets.ViewSet):
-#     queryset = Post.objects.all()
-#     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
-
-#     def list(self, request):
-#         serializer = PostSerializer(self.queryset, many=True)
-#         return Response(serializer.data)
-
-#     def retrieve(self, request, pk=None):
-#         post = get_object_or_404(self.queryset, pk=pk)
-#         serializer = PostSerializer(post)
-#         return Response(serializer.data)
-
-#     def create(self, request):
-#         serializer = PostSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def update(self, request, pk=None):
-#         print("============================")
-#         print(request.user)
-#         post = get_object_or_404(self.queryset, pk=pk)
-#         serializer = PostSerializer(post, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def destroy(self, request, pk=None):
-#         post = get_object_or_404(self.queryset, pk=pk)
-#         post.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-"""
-        
-    def list(self, request):
-        pass
-
-    def create(self, request):
-        pass
-
-    def retrieve(self, request, pk=None):
-        pass
-
-    def update(self, request, pk=None):
-        pass
-
-    def partial_update(self, request, pk=None):
-        pass
-
-    def destroy(self, request, pk=None):
-        pass
-        """
-
-# # Provides get and post method hand
-# class PostList(generics.ListCreateAPIView):
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     queryset = Post.postObject.all()
-#     serializer_class = PostSerializer
-
-# class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostAuthorPermission):
-#     permission_classes = [IsAuthenticatedOrReadOnly, PostAuthorPermission]
-
-#     queryset = Post.postObject.all()
-#     serializer_class = PostSerializer
-
-"""
-Concrete View Classes
-The following classes are the concrete generic views. If you're using generic views this is normally the level you'll be working at unless you need heavily customized behavior.
-
-The view classes can be imported from rest_framework.generics.
-
-CreateAPIView
-Used for create-only endpoints.
-
-Provides a post method handler.
-
-Extends: GenericAPIView, CreateModelMixin
-
-ListAPIView
-Used for read-only endpoints to represent a collection of model instances.
-
-Provides a get method handler.
-
-Extends: GenericAPIView, ListModelMixin
-
-RetrieveAPIView
-Used for read-only endpoints to represent a single model instance.
-
-Provides a get method handler.
-
-Extends: GenericAPIView, RetrieveModelMixin
-
-DestroyAPIView
-Used for delete-only endpoints for a single model instance.
-
-Provides a delete method handler.
-
-Extends: GenericAPIView, DestroyModelMixin
-
-UpdateAPIView
-Used for update-only endpoints for a single model instance.
-
-Provides put and patch method handlers.
-
-Extends: GenericAPIView, UpdateModelMixin
-
-ListCreateAPIView
-Used for read-write endpoints to represent a collection of model instances.
-
-Provides get and post method handlers.
-
-Extends: GenericAPIView, ListModelMixin, CreateModelMixin
-
-RetrieveUpdateAPIView
-Used for read or update endpoints to represent a single model instance.
-
-Provides get, put and patch method handlers.
-
-Extends: GenericAPIView, RetrieveModelMixin, UpdateModelMixin
-
-RetrieveDestroyAPIView
-Used for read or delete endpoints to represent a single model instance.
-
-Provides get and delete method handlers.
-
-Extends: GenericAPIView, RetrieveModelMixin, DestroyModelMixin
-
-RetrieveUpdateDestroyAPIView
-Used for read-write-delete endpoints to represent a single model instance.
-
-Provides get, put, patch and delete method handlers.
-
-Extends: GenericAPIView, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
-    
-    """
+    def get_object(self, queryset=None, **kwargs):
+        slug = self.kwargs.get("pk")
+        instance = get_object_or_404(Post, slug=slug)
+        self.check_object_permissions(self.request, instance)
+        return instance

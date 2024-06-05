@@ -2,9 +2,15 @@ from django.db import models
 
 # from django.contrib.auth.models import User
 from users.models import CustomUser
-from django.utils import timezone
+from django.utils import timezone, text
+import random
+import string
 
-# from django.conf import settings
+
+# a random character to maintain slug uniqueness, append after title
+def randomSlugPostfix():
+    chars = string.ascii_letters + string.digits
+    return "".join(random.choice(chars) for _ in range(6))
 
 
 # Create your models here.
@@ -26,7 +32,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     excerpt = models.TextField()
     content = models.TextField()
-    slug = models.SlugField(max_length=250, unique_for_date="published")
+    slug = models.SlugField(max_length=250, unique=True, blank=True, null=True)
     published = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=options, default="published")
@@ -39,3 +45,11 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+
+        if self.slug is None:
+            self.slug = text.slugify(self.title + "_" + randomSlugPostfix())
+        super().save(
+            *args, **kwargs
+        )  # Call the superclass's save() method to perform the actual save
