@@ -1,39 +1,50 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import axiosInstance from '../axios';
 
-
-const card = (
-
-
-  <CardContent sx={{ padding: 8, border: "1px solid outline red" }} >
-    <form>
-      <Typography noWrap variant='h3' bold sx={{ fontSize: 20, fontWeight: "bold", color: "orange" }} color="text.primary" >
-        Welcome back
-      </Typography>
-      <hr />
-
-      <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Username or Email" variant="standard" type='email' required gutterBottom /> <br />
-      <TextField fullWidth sx={{ marginBottom: 2 }} id="standard-basic" label="Password" variant="standard" required type='password' gutterBottom /><br /><br />
-
-      <Button type=" submit" fullWidth variant="contained" color='warning'>Login</Button>
-    </form>
-  </CardContent>
-
-);
 
 export default function Login() {
-  return (
-    <Container sx={{ padding: 8, border: 0, width: "40%" }} display="flex" alignItems="center" justifyContent="center"
-    >
+  const [credentials, setCredentials] = useState({}) 
+  const handleChange = (e) => {
+    setCredentials({...credentials, [e.target.name]: e.target.value})
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      <Card variant="outlined">{card}</Card>
+    try {
+      await axiosInstance.post("/signup", {
+        credentials
+      });
+      // Handle successful response, such as redirecting the user or showing a success message
+      console.log("Signup successful");
+
+    } catch (error) {
+      // Handle error, such as displaying an error message to the user
+      console.error("Error signing up:", error.message);
+    }
+  }
+  return (
+    <Container sx={{ padding: 8, border: 0, width: "40%" }} display="flex">
+      <Card variant="outlined">
+        <CardContent sx={{ padding: 8, border: "1px solid outline red" }} >
+          <form onSubmit={handleSubmit}>
+            <Typography noWrap variant='h3'  sx={{ fontSize: 20, fontWeight: "bold", color: "orange" }} color="text.primary" >
+              Welcome back
+            </Typography>
+            <hr />
+
+            <TextField onChange={handleChange} value={credentials['email']}   fullWidth sx={{ marginBottom: 2 }} name = "email" id="email" label="Username or Email" variant="standard" type='email' required  /> <br />
+            <TextField onChange={handleChange} value={credentials['password']}   fullWidth sx={{ marginBottom: 2 }} name = "password" id="password" label="Password" variant="standard" required type='password'  /><br /><br />
+
+            <Button type=" submit" fullWidth variant="contained" color='warning'>Login</Button>
+          </form>
+        </CardContent>
+      </Card>
 
     </Container>
   );
