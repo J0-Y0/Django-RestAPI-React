@@ -6,10 +6,12 @@ import { Container } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
   const [credentials, setCredentials] = useState({}) 
+  const redirect = useNavigate()
   const handleChange = (e) => {
     setCredentials({...credentials, [e.target.name]: e.target.value})
   }
@@ -17,15 +19,16 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      await axiosInstance.post("/signup", {
+      await axiosInstance.post("api/token/", 
         credentials
-      });
+      );
       // Handle successful response, such as redirecting the user or showing a success message
-      console.log("Signup successful");
+      console.log("login  successful");
+      redirect("/")
 
     } catch (error) {
       // Handle error, such as displaying an error message to the user
-      console.error("Error signing up:", error.message);
+      console.error("Error ;login :", error.message);
     }
   }
   return (
