@@ -40,9 +40,9 @@
 
   <header >
     {% block header %}
-        <nav class="navbar sticky-top navbar-expand-sm " style = "background-color:#CA6500" >
-            <div class="container-fluid sticky-top">
-                <a class="navbar-brand " href="#">
+        <nav class="navbar sticky-top navbar-expand-md " style = "background-color:#CA6500" >
+            <div class="container-fluid ">
+                <a class="navbar-brand  " href="#">
                     {% block branding %}{% endblock %}
                 </a>
 
@@ -50,10 +50,10 @@
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse justify-content-end navbar-collapse " id="navbarNav">
+                <div class=" collapse  navbar-collapse  justify-content-end pe-3" id="navbarNav">
                     {% block usertools %}
                     {% if has_permission %}
-                    <div id="user-tools">
+                    <div class="d-flex justify-content-center">
                 
                     <ul class="navbar-nav justify-content-end">
 
