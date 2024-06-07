@@ -10,14 +10,16 @@ import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import NoPage from "./components/noPage"
 import Signup from './components/signup';
+import PostDetail from './components/postDetail';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const Rooting = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login  />} />
         <Route path="/Signup" element={<Signup />} />
+        <Route path="/posts/:String" element={<PostDetail  />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

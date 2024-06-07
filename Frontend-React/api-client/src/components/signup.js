@@ -18,8 +18,7 @@ export default function Signup() {
             await axiosInstance.post("signup", account);
             // Handle successful response, such as redirecting the user or showing a success message
             console.log("Signup successful");
-            redirect('/login')
-        
+            redirect('/login', { state: { header: "=========ddd" } })
         } catch (error) {
             // Handle error, such as displaying an error message to the user
             console.error("Error signing up:", error.message);

@@ -1,21 +1,34 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import PostList from './components/postList';
-
+import axiosInstance from './axios';
 function App() {
   const [posts, setPosts] = useState("")
-  const BackedApi = "http://192.168.100.29:8000/api/"
-  useEffect(() => {
-    fetch(BackedApi)
-      .then((response) => response.json())
-      .then((data) => {
 
-        setPosts(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
 
-  }, [])
+
+
+
+  useEffect( () => {
+    try {
+
+      async function fetchData() {
+        // You can await here
+        const response = await axiosInstance.get("posts/",);
+        setPosts(response.data) 
+
+      }
+     fetchData();
+          
+    } catch (error) {
+      // Handle error, such as displaying an error message to the user
+      console.error("Error ;login :", error.message);
+    }
+  }
+    
+    
+    
+    , [])
 
   return (posts.length > 0 && <PostList posts={posts} />)
 

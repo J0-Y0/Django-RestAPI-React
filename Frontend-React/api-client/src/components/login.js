@@ -9,7 +9,7 @@ import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Login() {
+export default function Login({ title = "Welcome back" }) {
   const [credentials, setCredentials] = useState({}) 
   const redirect = useNavigate()
   const handleChange = (e) => {
@@ -37,7 +37,7 @@ export default function Login() {
         <CardContent sx={{ padding: 8, border: "1px solid outline red" }} >
           <form onSubmit={handleSubmit}>
             <Typography noWrap variant='h3'  sx={{ fontSize: 20, fontWeight: "bold", color: "orange" }} color="text.primary" >
-              Welcome back
+              {title}
             </Typography>
             <hr />
 

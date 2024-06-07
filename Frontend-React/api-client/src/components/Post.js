@@ -15,10 +15,10 @@ import { useState } from 'react';
 
 import ReportIcon from '@mui/icons-material/Report';
 export default function Post({ post }) {
-  const [label, setLabel ] = useState("Type your comment")
+const [label, setLabel ] = useState("Type your comment")
 
 
-  return (
+return (
 
           <Card    sx={{ minWidth: 275 ,my: '3px',background:"primary"}}>
             <CardContent>
@@ -30,7 +30,8 @@ export default function Post({ post }) {
                 {post.title}
               </Typography> 
               <Typography sx={{ mb: 1.5 }} color="text.secondary" >
-                {post.content}        <Button size="small" endIcon={<KeyboardDoubleArrowRightIcon />} >Learn More</Button>
+        {post.content}
+        <Button href={'posts/'+post.slug} size="small" endIcon={<KeyboardDoubleArrowRightIcon />} >Learn More</Button>
 
               </Typography>
               
